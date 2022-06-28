@@ -1,0 +1,123 @@
+* {
+    color: rgba(0, 0, 25, 0.35);
+    font-size: 1.1rem;
+    font-weight: 900;
+    text-shadow: .02rem .02rem .075rem rgb(255, 255, 255),
+    -.015rem -.015rem .05rem rgba(0, 0, 25, 0.34);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: rgb(230, 230, 240);
+    background-image: radial-gradient(ellipse at bottom right, rgb(210, 210, 220, 0), rgb(235, 235, 245, 0), rgb(210, 210, 220, .35)),
+    radial-gradient(ellipse at top left, rgb(245, 245, 255, 0), rgb(235, 235, 245, 0), rgb(255, 255, 265, 0.5)),
+    radial-gradient(ellipse at bottom right, rgb(210, 210, 220, 0), rgb(235, 235, 245, 0) 85%, rgb(210, 210, 220, .35)),
+    radial-gradient(ellipse at top left, rgb(245, 245, 255, 0), rgb(235, 235, 245, 0) 85%, rgb(255, 255, 265, 0.5));
+}
+
+#calc-border {
+    background-color: rgb(235, 235, 245);
+    border-radius: .5rem;
+    /* box-shadow: 0.5rem 0.5rem 1rem 0rem rgba(0, 0, 0, 0.1); */
+    box-shadow: -0.125rem -0.125rem .1rem -0.05rem rgb(255, 255, 255),
+    inset 0.1rem 0.1rem .15rem -0.1rem rgb(255, 255, 255),
+    inset 0.35rem 0.35rem .45rem 0rem rgb(245, 245, 250, 0.75),
+    inset -0.25rem -0.25rem .45rem 0rem rgb(150, 160, 170),
+    inset -0.1rem -0.1rem .15rem 0rem rgb(150, 160, 170),
+    /* 0.35rem 0.35rem .1rem -0.2rem rgb(150, 160, 170), */
+    1rem 1rem .5rem 0rem rgba(0, 0, 0, 0.06);
+    background-image: radial-gradient(ellipse at bottom right, rgb(210, 210, 220, 0), rgb(235, 235, 245, 0) 60%, rgb(210, 210, 220, .2)),
+    radial-gradient(ellipse at top left, rgb(245, 245, 255, 0), rgb(235, 235, 245, 0) 60%, rgb(245, 245, 255, .7));
+}
+
+#calc-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: .5rem;
+    border: none;
+}
+
+#calc-background {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    margin: 1.75rem 1.25rem;
+}
+
+#display-container {
+    margin-top: .25rem;
+    margin-bottom: 1.25rem;
+    padding: .25rem;
+    border-radius: .25rem;
+    background-color: rgb(235, 235, 245);
+    box-shadow: inset -0.15rem -0.15rem .15rem rgba(0, 34, 65, 0.1),
+    0.075rem 0.075rem .1rem 0.04rem rgba(0, 34, 65, 0.1),
+    inset 0.15rem 0.15rem .15rem rgb(255, 255, 255, .5),
+    -.075rem -.075rem .1rem 0.04rem rgb(255, 255, 255, .5);
+
+}
+
+#display-readout {
+    height: 3rem;
+    border-radius: .35rem;
+    border: .2rem solid rgb(235, 235, 245);
+    background-color: rgb(215, 215, 210);
+    box-shadow: inset 0.15rem 0.15rem .15rem 0rem rgba(0, 34, 65, 0.1),
+    inset 0.05rem 0.05rem .05rem 0rem rgb(255, 255, 255, .75),
+    inset 0.25rem 0.25rem .75rem rgba(0, 34, 65, 0.1),
+    inset -0.05rem -0.05rem .05rem 0rem rgb(255, 255, 255, .75),
+    inset 0rem 0rem .5rem .00rem  rgb(14, 14, 14, 0.05);
+}
+
+#button-section {
+    /* padding: .55rem; */
+    margin-bottom: .25rem;
+    padding-top: 0px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: .45rem;
+    width: 15rem;
+}
+
+button {
+    height: 3rem;
+    background-color: rgb(235, 235, 245);
+    background-image: radial-gradient(ellipse at bottom right, rgb(210, 210, 220, 0), rgb(235, 235, 245, 0) 60%, rgb(210, 210, 220, .2)),
+    radial-gradient(ellipse at top left, rgb(245, 245, 255, 0), rgb(235, 235, 245, 0) 60%, rgb(245, 245, 255, .7));
+    border-radius: .25rem;
+    margin: 0px;
+    padding: 0px;
+    border-style: none;
+    box-shadow: inset -0.15rem -0.15rem .15rem 0.1rem rgba(0, 34, 65, 0.1),
+    0.05rem 0.05rem .15rem 0.01rem rgba(0, 34, 65, 0.1),
+    inset 0.15rem 0.15rem .15rem 0rem rgb(255, 255, 255, 0.75),
+    -0.075rem -0.075rem .2rem -0.01rem rgba(255, 255, 255, 0.75);
+}
+
+/* button:hover {
+    background-image: radial-gradient(circle closest-side, rgb(225, 225, 235), rgb(235, 235, 245));
+} */
+
+button:active {
+    box-shadow: inset -0.2rem -0.2rem .15rem 0.1rem rgba(0, 34, 65, 0.1),
+    0.05rem 0.05rem .15rem 0.01rem rgba(0, 34, 65, 0.1),
+    inset 0.2rem 0.2rem .2rem 0rem rgb(255, 255, 255, 0.75),
+    -0.075rem -0.075rem .2rem -0.01rem rgba(255, 255, 255, 0.75);
+    background-image: radial-gradient(ellipse at bottom right, rgb(210, 210, 220, 0), rgb(235, 235, 245, 0) 20%, rgba(210, 210, 220, 0.736)),
+    radial-gradient(ellipse at top left, rgb(245, 245, 255, 0), rgb(235, 235, 245, 0) 80%, rgb(245, 245, 255, .7));
+}
+
+#zero {
+    grid-column: span 2;
+    /* border-radius: 1rem; */
+    /* grid-area: auto; */
+}
