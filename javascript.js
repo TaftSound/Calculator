@@ -34,7 +34,16 @@ const percentageButton = document.getElementById('percent');
 const clearButton = document.getElementById('clear');
 const equalButton = document.getElementById('equal');
 
-
+zeroButton.addEventListener('click', () => { numberButton(operationObject, '0'); });
+oneButton.addEventListener('click', () => { numberButton(operationObject, '1'); });
+twoButton.addEventListener('click', () => { numberButton(operationObject, '2'); });
+threeButton.addEventListener('click', () => { numberButton(operationObject, '3'); });
+fourButton.addEventListener('click', () => { numberButton(operationObject, '4'); });
+fiveButton.addEventListener('click', () => { numberButton(operationObject, '5'); });
+sixButton.addEventListener('click', () => { numberButton(operationObject, '6'); });
+sevenButton.addEventListener('click', () => { numberButton(operationObject, '7'); });
+eightButton.addEventListener('click', () => { numberButton(operationObject, '8'); });
+nineButton.addEventListener('click', () => { numberButton(operationObject, '9'); });
 
 
 let operationObject = {
@@ -86,5 +95,26 @@ function allClearButton(object) {
     object.currentOperator = null;
 }
 
-updateDisplay(operationObject.currentValue);
+function numberButton(object, number) {
+    if (!object.currentOperatorFunction) {
+        if (!object.currentValue) {
+            object.currentValue = '';
+        }
+        if (number !== '0' || object.currentValue) {
+            object.currentValue += number;
+        }
+    }
+    else {
+        if (!object.nextValue) {
+            object.nextValue = '';
+        }
+        if (number !== '0' || object.nextValue) {
+            object.nextValue += number;
+        }
+    }
+}
 
+
+// if ('') {
+//     console.log("truthy");
+// }
