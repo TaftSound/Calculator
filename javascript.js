@@ -15,6 +15,26 @@
 
 // When inputting numbers and displaying results, have an if statement that checks
 // length and rounds numbers or uses scientific notation
+const zeroButton = document.getElementById('zero');
+const oneButton = document.getElementById('one');
+const twoButton = document.getElementById('two');
+const threeButton = document.getElementById('three');
+const fourButton = document.getElementById('four');
+const fiveButton = document.getElementById('five');
+const sixButton = document.getElementById('six');
+const sevenButton = document.getElementById('seven');
+const eightButton = document.getElementById('eight');
+const nineButton = document.getElementById('nine');
+const plusButton = document.getElementById('plus');
+const minusButton = document.getElementById('minus');
+const multiplyButton = document.getElementById('multiply');
+const divideButton = document.getElementById('divide');
+const invertNegativeButton = document.getElementById('invert');
+const percentageButton = document.getElementById('percent');
+const clearButton = document.getElementById('clear');
+const equalButton = document.getElementById('equal');
+
+
 
 
 let operationObject = {
