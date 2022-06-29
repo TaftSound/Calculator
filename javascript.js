@@ -15,81 +15,83 @@
 
 // When inputting numbers and displaying results, have an if statement that checks
 // length and rounds numbers or uses scientific notation
-// const zeroButton = document.getElementById('zero');
-// const oneButton = document.getElementById('one');
-// const twoButton = document.getElementById('two');
-// const threeButton = document.getElementById('three');
-// const fourButton = document.getElementById('four');
-// const fiveButton = document.getElementById('five');
-// const sixButton = document.getElementById('six');
-// const sevenButton = document.getElementById('seven');
-// const eightButton = document.getElementById('eight');
-// const nineButton = document.getElementById('nine');
-// const plusButton = document.getElementById('plus');
-// const minusButton = document.getElementById('minus');
-// const multiplyButton = document.getElementById('multiply');
-// const divideButton = document.getElementById('divide');
-// const invertNegativeButton = document.getElementById('invert');
-// const percentageButton = document.getElementById('percent');
-// const clearButton = document.getElementById('clear');
-// const equalButton = document.getElementById('equal');
+const zeroButton = document.getElementById('zero');
+const oneButton = document.getElementById('one');
+const twoButton = document.getElementById('two');
+const threeButton = document.getElementById('three');
+const fourButton = document.getElementById('four');
+const fiveButton = document.getElementById('five');
+const sixButton = document.getElementById('six');
+const sevenButton = document.getElementById('seven');
+const eightButton = document.getElementById('eight');
+const nineButton = document.getElementById('nine');
+const plusButton = document.getElementById('plus');
+const minusButton = document.getElementById('minus');
+const multiplyButton = document.getElementById('multiply');
+const divideButton = document.getElementById('divide');
+const invertNegativeButton = document.getElementById('invert');
+const percentageButton = document.getElementById('percent');
+const clearButton = document.getElementById('clear');
+const equalButton = document.getElementById('equal');
 
-// zeroButton.addEventListener('click', () => { numberButton(operationObject, '0'); });
-// oneButton.addEventListener('click', () => { numberButton(operationObject, '1'); });
-// twoButton.addEventListener('click', () => { numberButton(operationObject, '2'); });
-// threeButton.addEventListener('click', () => { numberButton(operationObject, '3'); });
-// fourButton.addEventListener('click', () => { numberButton(operationObject, '4'); });
-// fiveButton.addEventListener('click', () => { numberButton(operationObject, '5'); });
-// sixButton.addEventListener('click', () => { numberButton(operationObject, '6'); });
-// sevenButton.addEventListener('click', () => { numberButton(operationObject, '7'); });
-// eightButton.addEventListener('click', () => { numberButton(operationObject, '8'); });
-// nineButton.addEventListener('click', () => { numberButton(operationObject, '9'); });
+zeroButton.addEventListener('click', () => { numberButton(operationObject, '0'); });
+oneButton.addEventListener('click', () => { numberButton(operationObject, '1'); });
+twoButton.addEventListener('click', () => { numberButton(operationObject, '2'); });
+threeButton.addEventListener('click', () => { numberButton(operationObject, '3'); });
+fourButton.addEventListener('click', () => { numberButton(operationObject, '4'); });
+fiveButton.addEventListener('click', () => { numberButton(operationObject, '5'); });
+sixButton.addEventListener('click', () => { numberButton(operationObject, '6'); });
+sevenButton.addEventListener('click', () => { numberButton(operationObject, '7'); });
+eightButton.addEventListener('click', () => { numberButton(operationObject, '8'); });
+nineButton.addEventListener('click', () => { numberButton(operationObject, '9'); });
 
-
-// const operationObject = {
-//     currentValue: null,
-//     nextValue: null,
-//     currentOperatorFunction: null,
-// }
-
-// function operateAndUpdateDisplay(object, operatorFunction, selectedOperator) {
-//     if(selectedOperator === '=') {
-//         object.currentOperatorFunction(object);
-//         updateDisplay(object);
-//         object.currentOperatorFunction = null;
-//         object.nextValue = null;
-//     }
-//     else if(object.nextValue) {
-//         object.currentOperatorFunction(object);
-//         updateDisplay(object.currentValue);
-//         updateOperatorFunction(object, operatorFunction);
-//         object.nextValue = null;
-//     }
-//     else {
-//         updateOperatorFunction(object, operatorFunction);
-//     }
-// }
-
-// function updateOperatorFunction(object, operatorFunction) {
-//     object.currentOperatorFunction = operatorFunction;
-// }
+clearButton.addEventListener('click', () => { allClearButton(operationObject); });
 
 
-// function add(object) {
-//     object.currentValue += object.nextValue;
-// }
+const operationObject = {
+    currentValue: null,
+    nextValue: null,
+    currentOperatorFunction: null,
+}
 
-// function multiply(object) {
-//     object.currentValue *= object.nextValue;
-// }
+function operateAndUpdateDisplay(object, operatorFunction, selectedOperator) {
+    if(selectedOperator === '=') {
+        object.currentOperatorFunction(object);
+        updateDisplay(object);
+        object.currentOperatorFunction = null;
+        object.nextValue = null;
+    }
+    else if(object.nextValue) {
+        object.currentOperatorFunction(object);
+        updateDisplay(object.currentValue);
+        updateOperatorFunction(object, operatorFunction);
+        object.nextValue = null;
+    }
+    else {
+        updateOperatorFunction(object, operatorFunction);
+    }
+}
 
-// function updateDisplay(value) {
-//     let readout = document.getElementById('readout');
-//     if (+value > 10000000000) {
+function updateOperatorFunction(object, operatorFunction) {
+    object.currentOperatorFunction = operatorFunction;
+}
 
-//     }
-//     readout.innerText = value;
-// }
+
+function add(object) {
+    object.currentValue += object.nextValue;
+}
+
+function multiply(object) {
+    object.currentValue *= object.nextValue;
+}
+
+function updateDisplay(value) {
+    let readout = document.getElementById('readout');
+    if (+value > 10000000000) {
+
+    }
+    readout.innerText = value;
+}
 
 function makeNumberFitDisplay(number) {
     console.log(number.length);
@@ -123,31 +125,31 @@ function makeNumberFitDisplay(number) {
     }
 }
 
-// function allClearButton(object) {
-//     updateDisplay('');
-//     object.currentValue = null;
-//     object.nextValue = null;
-//     object.currentOperator = null;
-// }
+function allClearButton(object) {
+    updateDisplay('');
+    object.currentValue = null;
+    object.nextValue = null;
+    object.currentOperator = null;
+}
 
-// function numberButton(object, number) {
-//     if (!object.currentOperatorFunction) {
-//         if (!object.currentValue) {
-//             object.currentValue = '';
-//         }
-//         if (number !== '0' || object.currentValue) {
-//             object.currentValue += number;
-//             updateDisplay(object.currentValue);
-//         }
-//     }
-//     else {
-//         if (!object.nextValue) {
-//             object.nextValue = '';
-//         }
-//         if (number !== '0' || object.nextValue) {
-//             object.nextValue += number;
-//             updateDisplay(object.nextValue);
-//         }
-//     }
-// }
+function numberButton(object, number) {
+    if (!object.currentOperatorFunction) {
+        if (!object.currentValue) {
+            object.currentValue = '';
+        }
+        if (number !== '0' || object.currentValue) {
+            object.currentValue += number;
+            updateDisplay(object.currentValue);
+        }
+    }
+    else {
+        if (!object.nextValue) {
+            object.nextValue = '';
+        }
+        if (number !== '0' || object.nextValue) {
+            object.nextValue += number;
+            updateDisplay(object.nextValue);
+        }
+    }
+}
 
