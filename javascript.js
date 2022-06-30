@@ -46,29 +46,47 @@ eightButton.addEventListener('click', () => { numberButton(operationObject, '8')
 nineButton.addEventListener('click', () => { numberButton(operationObject, '9'); });
 
 clearButton.addEventListener('click', () => { allClearButton(operationObject); });
+plusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '+', add); });
+minusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '-', subtract); });
+divideButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '/', divide); });
+multiplyButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '*', multiply); });
+equalButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '='); });
 
 
 const operationObject = {
     currentValue: null,
     nextValue: null,
     currentOperatorFunction: null,
+    equalsPressed: false,
+    operationRun: false,
 }
 
-function operateAndUpdateDisplay(object, operatorFunction, selectedOperator) {
-    if(selectedOperator === '=') {
-        object.currentOperatorFunction(object);
-        updateDisplay(object);
-        object.currentOperatorFunction = null;
-        object.nextValue = null;
-    }
-    else if(object.nextValue) {
-        object.currentOperatorFunction(object);
-        updateDisplay(object.currentValue);
-        updateOperatorFunction(object, operatorFunction);
-        object.nextValue = null;
+function operateAndUpdateDisplay(object, selectedOperator, operatorFunction = null) {
+    if(object.nextValue) {
+        if(selectedOperator === '=') {
+            object.currentOperatorFunction(object);
+            updateDisplay(object.currentValue);
+            object.operationRun = true;
+            object.equalsPressed = true;
+            return;
+        }
+        else {
+            if (object.currentOperatorFunction && !object.equalsPressed) {
+                object.currentOperatorFunction(object);
+                object.equalsPressed = true;
+            }
+            updateDisplay(object.currentValue);
+            updateOperatorFunction(object, operatorFunction);
+            object.operationRun = false;
+            object.equalsPressed = false;
+            object.nextValue = null;
+        }
     }
     else {
+        if (selectedOperator === '=') { return }
         updateOperatorFunction(object, operatorFunction);
+        object.operationRun = false;
+        object.equalsPressed = false;
     }
 }
 
@@ -78,23 +96,28 @@ function updateOperatorFunction(object, operatorFunction) {
 
 
 function add(object) {
-    object.currentValue += object.nextValue;
+    object.currentValue = `${+object.currentValue + +object.nextValue}`;
+}
+
+function subtract(object) {
+    object.currentValue = `${+object.currentValue - +object.nextValue}`;
 }
 
 function multiply(object) {
-    object.currentValue *= object.nextValue;
+    object.currentValue = `${+object.currentValue * +object.nextValue}`;
+}
+
+function divide(object) {
+    object.currentValue = `${+object.currentValue / +object.nextValue}`;
 }
 
 function updateDisplay(value) {
     let readout = document.getElementById('readout');
-    if (+value > 10000000000) {
-
-    }
+    value = makeNumberFitDisplay(value);
     readout.innerText = value;
 }
 
 function makeNumberFitDisplay(number) {
-    console.log(number.length);
     if (+number > 99999999999) {
         number = `${Math.round(+number)}`;
     }
@@ -106,7 +129,7 @@ function makeNumberFitDisplay(number) {
                 ++scientificNotationObject.power;
             }
             number = `${Math.round(+number * 10) / 10}`
-            return number + 'e' + scientificNotationObject.power;
+            return number + ' e' + scientificNotationObject.power;
         }
         else if (+number < .000000001) {
             while (+number < 1) {
@@ -114,7 +137,7 @@ function makeNumberFitDisplay(number) {
                 --scientificNotationObject.power;
             }
             number = `${Math.round(+number * 10) / 10}`
-            return number + 'e' + scientificNotationObject.power;
+            return number + ' e' + scientificNotationObject.power;
         }
         else {
             while (number.length > 11) {
@@ -123,6 +146,7 @@ function makeNumberFitDisplay(number) {
             return number;
         }
     }
+    else return number;
 }
 
 function allClearButton(object) {
@@ -133,6 +157,13 @@ function allClearButton(object) {
 }
 
 function numberButton(object, number) {
+    if (object.operationRun) {
+        object.currentOperatorFunction = null;
+        object.nextValue = null;
+        object.currentValue = null;
+        object.operationRun = false;
+        object.equalsPressed = false;
+    }
     if (!object.currentOperatorFunction) {
         if (!object.currentValue) {
             object.currentValue = '';
