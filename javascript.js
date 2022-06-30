@@ -46,6 +46,7 @@ sixButton.addEventListener('click', () => { numberButton(operationObject, '6'); 
 sevenButton.addEventListener('click', () => { numberButton(operationObject, '7'); });
 eightButton.addEventListener('click', () => { numberButton(operationObject, '8'); });
 nineButton.addEventListener('click', () => { numberButton(operationObject, '9'); });
+invertNegativeButton.addEventListener('click', () => { numberButton(operationObject, '+/-'); });
 
 clearButton.addEventListener('click', () => { allClearButton(operationObject); });
 plusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '+', add); });
@@ -177,6 +178,11 @@ function numberButton(object, number) {
         if (!object.currentValue) {
             object.currentValue = '';
         }
+        if (number === '+/-') { 
+            object.currentValue = -object.currentValue;
+            updateDisplay(object.currentValue);
+            return;
+        }
         if (number !== '0' || object.currentValue) {
             if (number === '.') {
                 if (object.decimalAvailable) {
@@ -191,6 +197,11 @@ function numberButton(object, number) {
     else {
         if (!object.nextValue) {
             object.nextValue = '';
+        }
+        if (number === '+/-') { 
+            object.nextValue = -object.nextValue;
+            updateDisplay(object.nextValue);
+            return;
         }
         if (number !== '0' || object.nextValue) {
             if (number === '.') {
