@@ -148,6 +148,9 @@ function makeNumberFitDisplay(number) {
         else {
             while (number.length > 11) {
                 number = number.substring(0, number.length -1);
+                while (number.charAt(number.length -1) === '0') {
+                    number = number.substring(0, number.length -1);
+                }
             }
             return number;
         }
