@@ -15,6 +15,7 @@
 
 // When inputting numbers and displaying results, have an if statement that checks
 // length and rounds numbers or uses scientific notation
+const decimalButton = document.getElementById('decimal');
 const zeroButton = document.getElementById('zero');
 const oneButton = document.getElementById('one');
 const twoButton = document.getElementById('two');
@@ -34,6 +35,7 @@ const percentageButton = document.getElementById('percent');
 const clearButton = document.getElementById('clear');
 const equalButton = document.getElementById('equal');
 
+decimalButton.addEventListener('click', () => { numberButton(operationObject, '.'); });
 zeroButton.addEventListener('click', () => { numberButton(operationObject, '0'); });
 oneButton.addEventListener('click', () => { numberButton(operationObject, '1'); });
 twoButton.addEventListener('click', () => { numberButton(operationObject, '2'); });
@@ -59,6 +61,7 @@ const operationObject = {
     currentOperatorFunction: null,
     equalsPressed: false,
     operationRun: false,
+    decimalAvailable: true,
 }
 
 function operateAndUpdateDisplay(object, selectedOperator, operatorFunction = null) {
@@ -68,17 +71,19 @@ function operateAndUpdateDisplay(object, selectedOperator, operatorFunction = nu
             updateDisplay(object.currentValue);
             object.operationRun = true;
             object.equalsPressed = true;
+            object.decimalAvailable = true;
             return;
         }
         else {
             if (object.currentOperatorFunction && !object.equalsPressed) {
                 object.currentOperatorFunction(object);
-                object.equalsPressed = true;
+                object.equalsPressed = true
             }
             updateDisplay(object.currentValue);
             updateOperatorFunction(object, operatorFunction);
             object.operationRun = false;
             object.equalsPressed = false;
+            object.decimalAvailable = true;
             object.nextValue = null;
         }
     }
@@ -87,6 +92,7 @@ function operateAndUpdateDisplay(object, selectedOperator, operatorFunction = nu
         updateOperatorFunction(object, operatorFunction);
         object.operationRun = false;
         object.equalsPressed = false;
+        object.decimalAvailable = true;
     }
 }
 
@@ -169,6 +175,12 @@ function numberButton(object, number) {
             object.currentValue = '';
         }
         if (number !== '0' || object.currentValue) {
+            if (number === '.') {
+                if (object.decimalAvailable) {
+                    object.decimalAvailable = false;
+                }
+                else return;
+            }
             object.currentValue += number;
             updateDisplay(object.currentValue);
         }
@@ -178,6 +190,12 @@ function numberButton(object, number) {
             object.nextValue = '';
         }
         if (number !== '0' || object.nextValue) {
+            if (number === '.') {
+                if (object.decimalAvailable) {
+                    object.decimalAvailable = false;
+                }
+                else return;
+            }
             object.nextValue += number;
             updateDisplay(object.nextValue);
         }
