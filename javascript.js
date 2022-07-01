@@ -57,22 +57,32 @@ equalButton.addEventListener('click', () => { operateAndUpdateDisplay(operationO
 
 
 const operationObject = {
-    currentValue: null,
-    nextValue: null,
+    currentValue: '0',
+    nextValue: '0',
     currentOperatorFunction: null,
     equalsPressed: false,
     operationRun: false,
     decimalAvailable: true,
+    toggleNegative: false,
 }
+
+updateDisplay(operationObject.currentValue);
 
 function operateAndUpdateDisplay(object, selectedOperator, operatorFunction = null) {
     if(object.nextValue) {
         if(selectedOperator === '=') {
+            if (!object.currentOperatorFunction) {
+                return;
+            }
+            if (object.nextValue == 0) {
+                return;
+            }
             object.currentOperatorFunction(object);
             updateDisplay(object.currentValue);
             object.operationRun = true;
             object.equalsPressed = true;
             object.decimalAvailable = true;
+            object.toggleNegative = false;
             return;
         }
         else {
@@ -85,7 +95,8 @@ function operateAndUpdateDisplay(object, selectedOperator, operatorFunction = nu
             object.operationRun = false;
             object.equalsPressed = false;
             object.decimalAvailable = true;
-            object.nextValue = null;
+            object.toggleNegative = false;
+            object.nextValue = '0';
         }
     }
     else {
@@ -94,6 +105,7 @@ function operateAndUpdateDisplay(object, selectedOperator, operatorFunction = nu
         object.operationRun = false;
         object.equalsPressed = false;
         object.decimalAvailable = true;
+        object.toggleNegative = false;
     }
 }
 
@@ -124,104 +136,120 @@ function updateDisplay(value) {
     readout.innerText = value;
 }
 
+function toScientificNotation(x, f) {
+    let newNumber = Number.parseFloat(x).toExponential(f);
+    return newNumber;
+}
+
 function makeNumberFitDisplay(number) {
-    if (+number > 99999999999) {
-        number = `${Math.round(+number)}`;
-    }
+    console.log(Math.abs(number));
     if (number.length > 11) {
-        const scientificNotationObject = { power: 0 }
-        if (+number > 99999999999) {
-            while (+number >= 10) {
-                number = `${+number / 10}`;
-                ++scientificNotationObject.power;
-            }
-            number = `${Math.round(+number * 10) / 10}`
-            return number + ' e' + scientificNotationObject.power;
-        }
-        else if (+number < .000000001) {
-            while (+number < 1) {
-                number = `${+number * 10}`;
-                --scientificNotationObject.power;
-            }
-            number = `${Math.round(+number * 10) / 10}`
-            return number + ' e' + scientificNotationObject.power;
-        }
-        else {
-            while (number.length > 11) {
-                number = number.substring(0, number.length -1);
-                while (number.charAt(number.length -1) === '0') {
-                    number = number.substring(0, number.length -1);
-                }
-            }
+        if (Math.abs(number) < 1e-99 && number < 0) {
+            console.log('works');
+            number = toScientificNotation(number, 4);
             return number;
         }
+        if (Math.abs(number) >= 1e100 || number < 0) {
+            number = toScientificNotation(number, 5);
+            return number;
+        }
+        number = toScientificNotation(number, 6);
     }
-    else return number;
+    return number;
 }
 
 function allClearButton(object) {
-    updateDisplay('');
-    object.currentValue = null;
-    object.nextValue = null;
-    object.currentOperator = null;
+    updateDisplay('0');
+    object.currentValue = '0';
+    object.nextValue = '0';
     object.currentOperatorFunction = null;
     object.operationRun = false;
     object.equalsPressed = false;
+    object.decimalAvailable = true;
+    object.toggleNegative = false;
 }
 
 function numberButton(object, number) {
     if (object.operationRun) {
-        object.currentOperatorFunction = null;
-        object.nextValue = null;
-        object.currentValue = null;
-        object.operationRun = false;
-        object.equalsPressed = false;
+        allClearButton(operationObject);
     }
     if (!object.currentOperatorFunction) {
-        if (!object.currentValue) {
-            object.currentValue = '';
-        }
         if (number === '+/-') { 
-            if (object.currentValue === '') {
-                return;
-            }
+            if (object.currentValue == 0) {
+                if (!object.toggleNegative) {
+                    object.toggleNegative = true;
+                    object.currentValue = '-' + object.currentValue;
+                    updateDisplay(object.currentValue);
+                    return;
+                }
+                if (object.toggleNegative) {
+                    object.toggleNegative = false;
+                    object.currentValue = object.currentValue.substring(1);
+                    updateDisplay(object.currentValue);
+                    return;
+                }
+            } 
             else {
                 object.currentValue = -object.currentValue;
                 updateDisplay(object.currentValue);
             }
             return;
         }
-        if (number !== '0' || object.currentValue) {
+        if (number !== '0' || object.currentValue !== '0') {
             if (number === '.') {
                 if (object.decimalAvailable) {
                     object.decimalAvailable = false;
+                    object.currentValue += number;
+                    updateDisplay(object.currentValue);
+                    return;
                 }
                 else return;
+            }
+            if (object.currentValue == 0) {
+                if (object.currentValue === '-0' || object.currentValue === '0') {
+                    object.currentValue = object.currentValue.substring(0, object.currentValue.length -1);
+                }
             }
             object.currentValue += number;
             updateDisplay(object.currentValue);
         }
     }
     else {
-        if (!object.nextValue) {
-            object.nextValue = '';
-        }
         if (number === '+/-') { 
-            if (object.nextValue === '') {
-                return;
-            }
+            if (object.nextValue == 0) {
+                if (!object.toggleNegative) {
+                    object.toggleNegative = true;
+                    object.nextValue = '-' + object.nextValue;
+                    updateDisplay(object.nextValue);
+                    return;
+                }
+                if (object.toggleNegative) {
+                    object.toggleNegative = false;
+                    object.nextValue = object.nextValue.substring(1);
+                    updateDisplay(object.nextValue);
+                    return;
+                }
+            } 
             else {
                 object.nextValue = -object.nextValue;
                 updateDisplay(object.nextValue);
             }
             return;
         }
-        if (number !== '0' || object.nextValue) {
+        if (number !== '0' || object.nextValue !== '0') {
             if (number === '.') {
                 if (object.decimalAvailable) {
                     object.decimalAvailable = false;
+                    object.nextValue += number;
+                    updateDisplay(object.nextValue);
+                    return;
                 }
                 else return;
+            }
+            if (object.nextValue == 0) {
+                if (object.nextValue === '-0' || object.nextValue === '0') {
+                    object.nextValue = object.nextValue.substring(0, object.nextValue.length -1);
+                }
             }
             object.nextValue += number;
             updateDisplay(object.nextValue);
