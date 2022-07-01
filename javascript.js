@@ -30,7 +30,7 @@ sevenButton.addEventListener('click', () => { numberButton(operationObject, '7')
 eightButton.addEventListener('click', () => { numberButton(operationObject, '8'); });
 nineButton.addEventListener('click', () => { numberButton(operationObject, '9'); });
 
-invertNegativeButton.addEventListener('click', () => { pressInvertButton(); });
+invertNegativeButton.addEventListener('click', () => { invertValue(); });
 clearButton.addEventListener('click', () => { allClearButton(operationObject); });
 plusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '+', add); });
 minusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '-', subtract); });
@@ -165,7 +165,11 @@ function allClearButton(object) {
     object.toggleNegative = false;
 }
 
-function invertValue(valueKey) {
+function invertValue() {
+    let valueKey;
+    if (operationObject.operationRun) { allClearButton(operationObject) }
+    if (!operationObject.currentOperatorFunction) { valueKey = 'currentValue'; }
+    else { valueKey = 'nextValue'; }
     operationObject[valueKey];
     if (operationObject[valueKey] === '0'
         || operationObject[valueKey] === '0.' 
@@ -182,11 +186,6 @@ function invertValue(valueKey) {
         operationObject[valueKey] = operationObject[valueKey].substring(1);
         updateDisplay(operationObject[valueKey]);
     }
-}
-
-function pressInvertButton() {
-    if (!object.currentOperatorFunction) { invertValue('currentValue'); }
-    else { invertValue('nextValue'); }
 }
 
 function numberButton(object, number) {
