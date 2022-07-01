@@ -18,7 +18,6 @@ const percentageButton = document.getElementById('percent');
 const clearButton = document.getElementById('clear');
 const equalButton = document.getElementById('equal');
 
-decimalButton.addEventListener('click', () => { numberButton(operationObject, '.'); });
 zeroButton.addEventListener('click', () => { numberButton(operationObject, '0'); });
 oneButton.addEventListener('click', () => { numberButton(operationObject, '1'); });
 twoButton.addEventListener('click', () => { numberButton(operationObject, '2'); });
@@ -30,6 +29,7 @@ sevenButton.addEventListener('click', () => { numberButton(operationObject, '7')
 eightButton.addEventListener('click', () => { numberButton(operationObject, '8'); });
 nineButton.addEventListener('click', () => { numberButton(operationObject, '9'); });
 
+decimalButton.addEventListener('click', () => { addDecimal(); });
 invertNegativeButton.addEventListener('click', () => { invertValue(); });
 clearButton.addEventListener('click', () => { allClearButton(operationObject); });
 plusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '+', add); });
@@ -96,20 +96,15 @@ function operateAndUpdateDisplay(object, selectedOperator, operatorFunction = nu
 function updateOperatorFunction(object, operatorFunction) {
     object.currentOperatorFunction = operatorFunction;
 }
-
-
 function add(object) {
     object.currentValue = `${+object.currentValue + +object.nextValue}`;
 }
-
 function subtract(object) {
     object.currentValue = `${+object.currentValue - +object.nextValue}`;
 }
-
 function multiply(object) {
     object.currentValue = `${+object.currentValue * +object.nextValue}`;
 }
-
 function divide(object) {
     object.currentValue = `${+object.currentValue / +object.nextValue}`;
 }
@@ -154,6 +149,11 @@ function makeNumberFitDisplay(number) {
     return number;
 }
 
+function getValueKey() {
+    if (!operationObject.currentOperatorFunction) { return 'currentValue'; }
+    else { return 'nextValue'; }
+}
+
 function allClearButton(object) {
     updateDisplay('0');
     object.currentValue = '0';
@@ -165,11 +165,19 @@ function allClearButton(object) {
     object.toggleNegative = false;
 }
 
-function invertValue() {
-    let valueKey;
+function addDecimal() {
     if (operationObject.operationRun) { allClearButton(operationObject) }
-    if (!operationObject.currentOperatorFunction) { valueKey = 'currentValue'; }
-    else { valueKey = 'nextValue'; }
+    let valueKey = getValueKey();
+    if (operationObject.decimalAvailable) {
+        operationObject.decimalAvailable = false;
+        operationObject[valueKey] += '.';
+        updateDisplay(operationObject[valueKey]);
+    }
+}
+
+function invertValue() {
+    if (operationObject.operationRun) { allClearButton(operationObject) }
+    let valueKey = getValueKey();
     operationObject[valueKey];
     if (operationObject[valueKey] === '0'
         || operationObject[valueKey] === '0.' 
@@ -194,14 +202,7 @@ function numberButton(object, number) {
     }
     if (!object.currentOperatorFunction) {
         if (number !== '0' || object.currentValue !== '0') {
-            if (number === '.') {
-                if (object.decimalAvailable) {
-                    object.decimalAvailable = false;
-                    object.currentValue += number;
-                    updateDisplay(object.currentValue);
-                    return;
-                }
-                else return;
+
             }
             if (object.currentValue == 0) {
                 if (object.currentValue === '-0' || object.currentValue === '0') {
@@ -211,18 +212,8 @@ function numberButton(object, number) {
             object.currentValue += number;
             updateDisplay(object.currentValue);
         }
-    }
     else {
         if (number !== '0' || object.nextValue !== '0') {
-            if (number === '.') {
-                if (object.decimalAvailable) {
-                    object.decimalAvailable = false;
-                    object.nextValue += number;
-                    updateDisplay(object.nextValue);
-                    return;
-                }
-                else return;
-            }
             if (object.nextValue == 0) {
                 if (object.nextValue === '-0' || object.nextValue === '0') {
                     object.nextValue = object.nextValue.substring(0, object.nextValue.length -1);
