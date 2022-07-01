@@ -18,16 +18,16 @@ const percentageButton = document.getElementById('percent');
 const clearButton = document.getElementById('clear');
 const equalButton = document.getElementById('equal');
 
-zeroButton.addEventListener('click', () => { numberButton(operationObject, '0'); });
-oneButton.addEventListener('click', () => { numberButton(operationObject, '1'); });
-twoButton.addEventListener('click', () => { numberButton(operationObject, '2'); });
-threeButton.addEventListener('click', () => { numberButton(operationObject, '3'); });
-fourButton.addEventListener('click', () => { numberButton(operationObject, '4'); });
-fiveButton.addEventListener('click', () => { numberButton(operationObject, '5'); });
-sixButton.addEventListener('click', () => { numberButton(operationObject, '6'); });
-sevenButton.addEventListener('click', () => { numberButton(operationObject, '7'); });
-eightButton.addEventListener('click', () => { numberButton(operationObject, '8'); });
-nineButton.addEventListener('click', () => { numberButton(operationObject, '9'); });
+zeroButton.addEventListener('click', () => { numberButton('0'); });
+oneButton.addEventListener('click', () => { numberButton('1'); });
+twoButton.addEventListener('click', () => { numberButton('2'); });
+threeButton.addEventListener('click', () => { numberButton('3'); });
+fourButton.addEventListener('click', () => { numberButton('4'); });
+fiveButton.addEventListener('click', () => { numberButton('5'); });
+sixButton.addEventListener('click', () => { numberButton('6'); });
+sevenButton.addEventListener('click', () => { numberButton('7'); });
+eightButton.addEventListener('click', () => { numberButton('8'); });
+nineButton.addEventListener('click', () => { numberButton('9'); });
 
 decimalButton.addEventListener('click', () => { addDecimal(); });
 invertNegativeButton.addEventListener('click', () => { invertValue(); });
@@ -110,9 +110,7 @@ function divide(object) {
 }
 
 function percentage(object) {
-    if (object.operationRun) {
-        return;
-    }
+    if (object.operationRun) { return; }
     if (object.nextValue == 0) {
         object.currentValue = `${+object.currentValue / 100}`;
         updateDisplay(object.currentValue);
@@ -196,32 +194,30 @@ function invertValue() {
     }
 }
 
-function numberButton(object, number) {
-    if (object.operationRun) {
-        allClearButton(operationObject);
-    }
-    if (!object.currentOperatorFunction) {
-        if (number !== '0' || object.currentValue !== '0') {
-
-            }
-            if (object.currentValue == 0) {
-                if (object.currentValue === '-0' || object.currentValue === '0') {
-                    object.currentValue = object.currentValue.substring(0, object.currentValue.length -1);
+function numberButton(number) {
+    if (operationObject.operationRun) { allClearButton(operationObject); }
+    let valueKey = getValueKey();
+    // if (!object.currentOperatorFunction) {
+        if (number !== '0' || operationObject[valueKey] !== '0') {
+            if (operationObject[valueKey] == 0) {
+                if (operationObject[valueKey] === '-0' || operationObject[valueKey] === '0') {
+                    operationObject[valueKey] = operationObject[valueKey].substring(0, operationObject[valueKey].length -1);
                 }
             }
-            object.currentValue += number;
-            updateDisplay(object.currentValue);
+            operationObject[valueKey] += number;
+            updateDisplay(operationObject[valueKey]);
         }
-    else {
-        if (number !== '0' || object.nextValue !== '0') {
-            if (object.nextValue == 0) {
-                if (object.nextValue === '-0' || object.nextValue === '0') {
-                    object.nextValue = object.nextValue.substring(0, object.nextValue.length -1);
-                }
-            }
-            object.nextValue += number;
-            updateDisplay(object.nextValue);
-        }
-    }
+    // }
+    // else {
+    //     if (number !== '0' || object.nextValue !== '0') {
+    //         if (object.nextValue == 0) {
+    //             if (object.nextValue === '-0' || object.nextValue === '0') {
+    //                 object.nextValue = object.nextValue.substring(0, object.nextValue.length -1);
+    //             }
+    //         }
+    //         object.nextValue += number;
+    //         updateDisplay(object.nextValue);
+    //     }
+    // }
 }
 
