@@ -25,15 +25,15 @@ body {
     /* box-shadow: 0.5rem 0.5rem 1rem 0rem rgba(0, 0, 0, 0.1); */
     box-shadow: 
     /* -0.125rem -0.125rem .1rem -0.05rem rgb(255, 255, 255), */
-    inset -0.05rem -0.05rem .05rem 0rem rgb(225, 225, 235, 0.4),
-    inset -0.45rem -0.45rem .45rem 0.0rem rgb(150, 160, 170, .5),
-    inset -0.1rem -0.1rem .25rem 0rem rgb(150, 160, 170, .75),
+    inset -0.05rem -0.05rem .05rem 0rem rgb(225, 225, 235, .4),
+    inset -0.45rem -0.45rem .45rem 0.0rem rgb(150, 160, 170, .4),
+    inset -0.1rem -0.1rem .25rem 0rem rgb(150, 160, 170, .4),
     inset 0.05rem 0.05rem .05rem 0rem rgb(225, 225, 235, 0.05),
     inset 0.15rem 0.15rem .35rem 0.1rem rgb(255, 255, 255),
     inset 0.45rem 0.45rem .45rem 0.25rem rgb(245, 245, 250),
     /* 0.35rem 0.35rem .1rem -0.2rem rgb(150, 160, 170), */
     0rem 0rem 3.5rem 0rem rgba(0, 0, 0, 0.1);
-    background-image: radial-gradient(ellipse at bottom right, rgb(210, 210, 220, 0), rgb(235, 235, 245, 0) 60%, rgb(210, 210, 220, .6)),
+    background-image: radial-gradient(ellipse at bottom right, rgb(210, 210, 220, 0), rgb(235, 235, 245, 0) 60%, rgb(210, 210, 220, .4)),
     radial-gradient(ellipse at top left, rgb(245, 245, 255, 0), rgb(235, 235, 245, 0) 60%, rgb(245, 245, 255, 1));
 }
 
