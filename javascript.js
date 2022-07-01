@@ -29,8 +29,8 @@ sixButton.addEventListener('click', () => { numberButton(operationObject, '6'); 
 sevenButton.addEventListener('click', () => { numberButton(operationObject, '7'); });
 eightButton.addEventListener('click', () => { numberButton(operationObject, '8'); });
 nineButton.addEventListener('click', () => { numberButton(operationObject, '9'); });
-invertNegativeButton.addEventListener('click', () => { numberButton(operationObject, '+/-'); });
 
+invertNegativeButton.addEventListener('click', () => { pressInvertButton(); });
 clearButton.addEventListener('click', () => { allClearButton(operationObject); });
 plusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '+', add); });
 minusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '-', subtract); });
@@ -165,40 +165,35 @@ function allClearButton(object) {
     object.toggleNegative = false;
 }
 
+function invertValue(valueKey) {
+    operationObject[valueKey];
+    if (operationObject[valueKey] === '0'
+        || operationObject[valueKey] === '0.' 
+        || operationObject[valueKey] > 0) {
+            makeNegative();
+        }
+    else { makePositive(); }
+        
+    function makeNegative() {
+        operationObject[valueKey] = '-' + operationObject[valueKey];
+        updateDisplay(operationObject[valueKey]);
+    }
+    function makePositive(object) {
+        operationObject[valueKey] = operationObject[valueKey].substring(1);
+        updateDisplay(operationObject[valueKey]);
+    }
+}
+
+function pressInvertButton() {
+    if (!object.currentOperatorFunction) { invertValue('currentValue'); }
+    else { invertValue('nextValue'); }
+}
+
 function numberButton(object, number) {
     if (object.operationRun) {
         allClearButton(operationObject);
     }
     if (!object.currentOperatorFunction) {
-        if (number === '+/-') { 
-            if (object.currentValue == 0) {
-                if (!object.toggleNegative) {
-                    object.toggleNegative = true;
-                    object.currentValue = '-' + object.currentValue;
-                    updateDisplay(object.currentValue);
-                    return;
-                }
-                if (object.toggleNegative) {
-                    object.toggleNegative = false;
-                    object.currentValue = object.currentValue.substring(1);
-                    updateDisplay(object.currentValue);
-                    return;
-                }
-            } 
-            else {
-                if (object.currentValue < 0) {
-                    object.toggleNegative = false;
-                    object.currentValue = object.currentValue.substring(1);
-                    updateDisplay(object.currentValue);
-                }
-                else if (object.currentValue > 0) {
-                    object.toggleNegative = true;
-                    object.currentValue = '-' + object.currentValue;
-                    updateDisplay(object.currentValue);
-                }
-            }
-            return;
-        }
         if (number !== '0' || object.currentValue !== '0') {
             if (number === '.') {
                 if (object.decimalAvailable) {
@@ -219,35 +214,6 @@ function numberButton(object, number) {
         }
     }
     else {
-        if (number === '+/-') { 
-            if (object.nextValue == 0) {
-                if (!object.toggleNegative) {
-                    object.toggleNegative = true;
-                    object.nextValue = '-' + object.nextValue;
-                    updateDisplay(object.nextValue);
-                    return;
-                }
-                if (object.toggleNegative) {
-                    object.toggleNegative = false;
-                    object.nextValue = object.nextValue.substring(1);
-                    updateDisplay(object.nextValue);
-                    return;
-                }
-            } 
-            else {
-                if (object.nextValue < 0) {
-                    object.toggleNegative = false;
-                    object.nextValue = object.nextValue.substring(1);
-                    updateDisplay(object.nextValue);
-                }
-                else if (object.nextValue > 0) {
-                    object.toggleNegative = true;
-                    object.nextValue = '-' + object.nextValue;
-                    updateDisplay(object.nextValue);
-                }
-            }
-            return;
-        }
         if (number !== '0' || object.nextValue !== '0') {
             if (number === '.') {
                 if (object.decimalAvailable) {
