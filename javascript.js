@@ -164,6 +164,9 @@ function allClearButton(object) {
     object.currentValue = null;
     object.nextValue = null;
     object.currentOperator = null;
+    object.currentOperatorFunction = null;
+    object.operationRun = false;
+    object.equalsPressed = false;
 }
 
 function numberButton(object, number) {
@@ -179,8 +182,13 @@ function numberButton(object, number) {
             object.currentValue = '';
         }
         if (number === '+/-') { 
-            object.currentValue = -object.currentValue;
-            updateDisplay(object.currentValue);
+            if (object.currentValue === '') {
+                return;
+            }
+            else {
+                object.currentValue = -object.currentValue;
+                updateDisplay(object.currentValue);
+            }
             return;
         }
         if (number !== '0' || object.currentValue) {
@@ -199,8 +207,13 @@ function numberButton(object, number) {
             object.nextValue = '';
         }
         if (number === '+/-') { 
-            object.nextValue = -object.nextValue;
-            updateDisplay(object.nextValue);
+            if (object.nextValue === '') {
+                return;
+            }
+            else {
+                object.nextValue = -object.nextValue;
+                updateDisplay(object.nextValue);
+            }
             return;
         }
         if (number !== '0' || object.nextValue) {
