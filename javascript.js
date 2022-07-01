@@ -53,6 +53,7 @@ plusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationOb
 minusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '-', subtract); });
 divideButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '/', divide); });
 multiplyButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '*', multiply); });
+percentageButton.addEventListener('click', () => { percentage(operationObject); });
 equalButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '='); });
 
 
@@ -128,6 +129,20 @@ function multiply(object) {
 
 function divide(object) {
     object.currentValue = `${+object.currentValue / +object.nextValue}`;
+}
+
+function percentage(object) {
+    if (object.operationRun) {
+        return;
+    }
+    if (object.nextValue == 0) {
+        object.currentValue = `${+object.currentValue / 100}`;
+        updateDisplay(object.currentValue);
+    }
+    else {
+        object.nextValue = `${+object.nextValue / 100}`;
+        updateDisplay(object.nextValue);
+    }
 }
 
 function updateDisplay(value) {
