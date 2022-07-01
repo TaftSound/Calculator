@@ -157,10 +157,8 @@ function toScientificNotation(x, f) {
 }
 
 function makeNumberFitDisplay(number) {
-    console.log(Math.abs(number));
     if (number.length > 11) {
         if (Math.abs(number) < 1e-99 && number < 0) {
-            console.log('works');
             number = toScientificNotation(number, 4);
             return number;
         }
@@ -205,8 +203,16 @@ function numberButton(object, number) {
                 }
             } 
             else {
-                object.currentValue = -object.currentValue;
-                updateDisplay(object.currentValue);
+                if (object.currentValue < 0) {
+                    object.toggleNegative = false;
+                    object.currentValue = object.currentValue.substring(1);
+                    updateDisplay(object.currentValue);
+                }
+                else if (object.currentValue > 0) {
+                    object.toggleNegative = true;
+                    object.currentValue = '-' + object.currentValue;
+                    updateDisplay(object.currentValue);
+                }
             }
             return;
         }
@@ -246,8 +252,16 @@ function numberButton(object, number) {
                 }
             } 
             else {
-                object.nextValue = -object.nextValue;
-                updateDisplay(object.nextValue);
+                if (object.nextValue < 0) {
+                    object.toggleNegative = false;
+                    object.nextValue = object.nextValue.substring(1);
+                    updateDisplay(object.nextValue);
+                }
+                else if (object.nextValue > 0) {
+                    object.toggleNegative = true;
+                    object.nextValue = '-' + object.nextValue;
+                    updateDisplay(object.nextValue);
+                }
             }
             return;
         }
