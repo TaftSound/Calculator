@@ -37,7 +37,7 @@ minusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationO
 divideButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '/', divide); });
 multiplyButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '*', multiply); });
 percentageButton.addEventListener('click', () => { percentage(); });
-equalButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '='); });
+equalButton.addEventListener('click', () => { equals(); });
 
 
 const operationObject = {
@@ -52,39 +52,34 @@ const operationObject = {
 
 updateDisplay(operationObject.currentValue);
 
+function equals() {
+    let valueKey = getValueKey();
+    if (valueKey === 'currentValue') { return; }
+    else {
+        operationObject.currentOperatorFunction(operationObject);
+        updateDisplay(operationObject.currentValue);
+        operationObject.operationRun = true;
+        operationObject.equalsPressed = true;
+        operationObject.decimalAvailable = true;
+        operationObject.toggleNegative = false;
+    }
+}
+
 function operateAndUpdateDisplay(object, selectedOperator, operatorFunction = null) {
     if(object.nextValue) {
-        if(selectedOperator === '=') {
-            if (!object.currentOperatorFunction) {
-                return;
-            }
-            if (object.nextValue == 0) {
-                return;
-            }
+        if (object.currentOperatorFunction && !object.equalsPressed) {
             object.currentOperatorFunction(object);
-            updateDisplay(object.currentValue);
-            object.operationRun = true;
-            object.equalsPressed = true;
-            object.decimalAvailable = true;
-            object.toggleNegative = false;
-            return;
+            object.equalsPressed = true
         }
-        else {
-            if (object.currentOperatorFunction && !object.equalsPressed) {
-                object.currentOperatorFunction(object);
-                object.equalsPressed = true
-            }
-            updateDisplay(object.currentValue);
-            updateOperatorFunction(object, operatorFunction);
-            object.operationRun = false;
-            object.equalsPressed = false;
-            object.decimalAvailable = true;
-            object.toggleNegative = false;
-            object.nextValue = '0';
-        }
+        updateDisplay(object.currentValue);
+        updateOperatorFunction(object, operatorFunction);
+        object.operationRun = false;
+        object.equalsPressed = false;
+        object.decimalAvailable = true;
+        object.toggleNegative = false;
+        object.nextValue = '0';
     }
     else {
-        if (selectedOperator === '=') { return }
         updateOperatorFunction(object, operatorFunction);
         object.operationRun = false;
         object.equalsPressed = false;
