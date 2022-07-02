@@ -133,6 +133,7 @@ function equals() {
     else {
         operationObject.currentOperatorFunction(operationObject);
         updateDisplay(operationObject.currentValue);
+        operationObject.nextValue = '0';
         operationObject.operationRun = true;
         operationObject.equalsPressed = true;
         operationObject.decimalAvailable = true;
