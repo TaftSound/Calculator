@@ -32,10 +32,10 @@ nineButton.addEventListener('click', () => { numberButton('9'); });
 decimalButton.addEventListener('click', () => { addDecimal(); });
 invertNegativeButton.addEventListener('click', () => { invertValue(); });
 clearButton.addEventListener('click', () => { allClearButton(); });
-plusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '+', add); });
-minusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '-', subtract); });
-divideButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '/', divide); });
-multiplyButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '*', multiply); });
+plusButton.addEventListener('click', () => { operateAndUpdateDisplay(add); });
+minusButton.addEventListener('click', () => { operateAndUpdateDisplay(subtract); });
+divideButton.addEventListener('click', () => { operateAndUpdateDisplay(divide); });
+multiplyButton.addEventListener('click', () => { operateAndUpdateDisplay(multiply); });
 percentageButton.addEventListener('click', () => { percentage(); });
 equalButton.addEventListener('click', () => { equals(); });
 
@@ -52,42 +52,20 @@ const operationObject = {
 
 updateDisplay(operationObject.currentValue);
 
-function equals() {
-    let valueKey = getValueKey();
-    if (valueKey === 'currentValue') { return; }
-    else {
+function operateAndUpdateDisplay(operatorFunction) {
+    if (operationObject.currentOperatorFunction && !operationObject.equalsPressed) {
         operationObject.currentOperatorFunction(operationObject);
         updateDisplay(operationObject.currentValue);
-        operationObject.operationRun = true;
-        operationObject.equalsPressed = true;
-        operationObject.decimalAvailable = true;
-        operationObject.toggleNegative = false;
+        operationObject.nextValue = '0';
     }
-}
+    updateOperatorFunction(operatorFunction);
+    operationObject.operationRun = false;
+    operationObject.equalsPressed = false;
+    operationObject.decimalAvailable = true;
+    operationObject.toggleNegative = false;
 
-function operateAndUpdateDisplay(object, selectedOperator, operatorFunction = null) {
-    if(object.nextValue) {
-        if (object.currentOperatorFunction && !object.equalsPressed) {
-            object.currentOperatorFunction(object);
-            object.equalsPressed = true
-        }
-        updateDisplay(object.currentValue);
-        updateOperatorFunction(object, operatorFunction);
-        object.operationRun = false;
-        object.equalsPressed = false;
-        object.decimalAvailable = true;
-        object.toggleNegative = false;
-        object.nextValue = '0';
-    }
-    else {
-        updateOperatorFunction(object, operatorFunction);
-        object.operationRun = false;
-        object.equalsPressed = false;
-        object.decimalAvailable = true;
-        object.toggleNegative = false;
-    }
-    function updateOperatorFunction(object, operatorFunction) {
-        object.currentOperatorFunction = operatorFunction;
+    function updateOperatorFunction(operatorFunction) {
+        operationObject.currentOperatorFunction = operatorFunction;
     }
 }
 
@@ -149,6 +127,19 @@ function invertValue() {
     function makePositive() { operationObject[valueKey] = operationObject[valueKey].substring(1); }
 }
 
+function equals() {
+    let valueKey = getValueKey();
+    if (valueKey === 'currentValue') { return; }
+    else {
+        operationObject.currentOperatorFunction(operationObject);
+        updateDisplay(operationObject.currentValue);
+        operationObject.operationRun = true;
+        operationObject.equalsPressed = true;
+        operationObject.decimalAvailable = true;
+        operationObject.toggleNegative = false;
+    }
+}
+
 function allClearButton() {
     updateDisplay('0');
     operationObject.currentValue = '0';
@@ -170,15 +161,14 @@ function makeNumberFitDisplay(number) {
     if (number.length > 11) {
         if (Math.abs(number) < 1e-99 && number < 0) {
             number = toScientificNotation(number, 4);
-            return number;
         }
-        if (Math.abs(number) >= 1e100 || number < 0) {
+        else if (Math.abs(number) >= 1e100 || number < 0) {
             number = toScientificNotation(number, 5);
-            return number;
         }
-        number = toScientificNotation(number, 6);
+        else { number = toScientificNotation(number, 6); }
     }
     return number;
+
     function toScientificNotation(x, f) {
         let newNumber = Number.parseFloat(x).toExponential(f);
         return newNumber;
