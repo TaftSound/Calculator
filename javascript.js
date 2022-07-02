@@ -36,7 +36,7 @@ plusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationOb
 minusButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '-', subtract); });
 divideButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '/', divide); });
 multiplyButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '*', multiply); });
-percentageButton.addEventListener('click', () => { percentage(operationObject); });
+percentageButton.addEventListener('click', () => { percentage(); });
 equalButton.addEventListener('click', () => { operateAndUpdateDisplay(operationObject, '='); });
 
 
@@ -109,27 +109,17 @@ function divide(object) {
     object.currentValue = `${+object.currentValue / +object.nextValue}`;
 }
 
-function percentage(object) {
-    if (object.operationRun) { return; }
-    if (object.nextValue == 0) {
-        object.currentValue = `${+object.currentValue / 100}`;
-        updateDisplay(object.currentValue);
-    }
-    else {
-        object.nextValue = `${+object.nextValue / 100}`;
-        updateDisplay(object.nextValue);
-    }
+function percentage() {
+    if (operationObject.operationRun) { return; }
+    let valueKey = getValueKey();
+        operationObject[valueKey] = `${+operationObject[valueKey] / 100}`;
+        updateDisplay(operationObject[valueKey]);
 }
 
 function updateDisplay(value) {
     let readout = document.getElementById('readout');
     value = makeNumberFitDisplay(value);
     readout.innerText = value;
-}
-
-function toScientificNotation(x, f) {
-    let newNumber = Number.parseFloat(x).toExponential(f);
-    return newNumber;
 }
 
 function makeNumberFitDisplay(number) {
@@ -145,6 +135,10 @@ function makeNumberFitDisplay(number) {
         number = toScientificNotation(number, 6);
     }
     return number;
+    function toScientificNotation(x, f) {
+        let newNumber = Number.parseFloat(x).toExponential(f);
+        return newNumber;
+    }
 }
 
 function getValueKey() {
