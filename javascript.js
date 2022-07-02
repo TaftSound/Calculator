@@ -56,13 +56,13 @@ function operateAndUpdateDisplay(operatorFunction) {
     if (operationObject.currentOperatorFunction && !operationObject.equalsPressed) {
         operationObject.currentOperatorFunction(operationObject);
         updateDisplay(operationObject.currentValue);
-        operationObject.nextValue = '0';
     }
     updateOperatorFunction(operatorFunction);
     operationObject.operationRun = false;
     operationObject.equalsPressed = false;
     operationObject.decimalAvailable = true;
     operationObject.toggleNegative = false;
+    operationObject.nextValue = '0';
 
     function updateOperatorFunction(operatorFunction) {
         operationObject.currentOperatorFunction = operatorFunction;
@@ -133,11 +133,9 @@ function equals() {
     else {
         operationObject.currentOperatorFunction(operationObject);
         updateDisplay(operationObject.currentValue);
-        operationObject.nextValue = '0';
         operationObject.operationRun = true;
         operationObject.equalsPressed = true;
         operationObject.decimalAvailable = true;
-        operationObject.toggleNegative = false;
     }
 }
 
@@ -149,7 +147,6 @@ function allClearButton() {
     operationObject.operationRun = false;
     operationObject.equalsPressed = false;
     operationObject.decimalAvailable = true;
-    operationObject.toggleNegative = false;
 }
 
 function updateDisplay(value) {
@@ -159,6 +156,9 @@ function updateDisplay(value) {
 }
 
 function makeNumberFitDisplay(number) {
+    if (!((number % 1) === 0) && Math.abs(number) > .0000000001) {
+        number = Math.round(number * 10000000000) / 10000000000;
+    }
     if (number.length > 11) {
         if (Math.abs(number) < 1e-99 && number < 0) {
             number = toScientificNotation(number, 4);
@@ -167,6 +167,7 @@ function makeNumberFitDisplay(number) {
             number = toScientificNotation(number, 5);
         }
         else { number = toScientificNotation(number, 6); }
+        console.log(number);
     }
     return number;
 
