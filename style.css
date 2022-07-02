@@ -12,6 +12,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    margin: 0;
     background-color: rgb(230, 230, 240);
     background-image: radial-gradient(ellipse at bottom right, rgb(210, 210, 220, 0), rgb(235, 235, 245, 0), rgb(210, 210, 220, .65)),
     radial-gradient(ellipse at top left, rgb(245, 245, 255, 0), rgb(235, 235, 245, 0), rgb(255, 255, 265, 0.75)),
@@ -96,7 +97,6 @@ body {
 }
 
 #button-section {
-    /* padding: .55rem; */
     margin-bottom: .25rem;
     padding-top: 0px;
     display: grid;
